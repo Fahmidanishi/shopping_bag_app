@@ -201,6 +201,8 @@ class _ShoppingCartState extends State<ShoppingCart> {
               },
               child: Text('CHECK OUT', style: TextStyle(fontSize: 18)),
             ),
+
+
           ],
         ),
       ),
