@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:shopping_bag_app/screens/add_new_product_screen.dart';
 import 'package:shopping_bag_app/widgets/product_item.dart';
-
+//product list
 class ProductListScreen extends StatefulWidget {
   const ProductListScreen({super.key});
 

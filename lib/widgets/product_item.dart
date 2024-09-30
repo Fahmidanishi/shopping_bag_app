@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:shopping_bag_app/screens/update_product_screen.dart';
-
+//product items
 class ProductItem extends StatelessWidget {
   const ProductItem({
     super.key,

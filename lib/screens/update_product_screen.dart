@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-
+//updated product
 class UpdateProductScreen extends StatefulWidget {
   const UpdateProductScreen({super.key});
 

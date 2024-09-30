@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-
+//new product
 class AddNewProductScreen extends StatefulWidget {
   const AddNewProductScreen({super.key});
 
