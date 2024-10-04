@@ -5,14 +5,14 @@ import 'package:shopping_bag_app/screens/add_new_product_screen.dart';
 import 'package:shopping_bag_app/widgets/product_item.dart';
 import 'package:shopping_bag_app/models/product.dart';
 
-class ProductListScreen extends StatefulWidget {
-  const ProductListScreen({super.key});
-
+class DeleteProductScreen extends StatefulWidget {
+  const DeleteProductScreen({super.key, required this.product});
+  final Product product;
   @override
-  State<ProductListScreen> createState() => _ProductListScreenState();
+  State<DeleteProductScreen> createState() => _DeleteProductScreenState();
 }
 
-class _ProductListScreenState extends State<ProductListScreen> {
+class _DeleteProductScreenState extends State<DeleteProductScreen> {
   List<Product> productList = [];
   bool _inProgress = false;
 
@@ -47,7 +47,6 @@ class _ProductListScreenState extends State<ProductListScreen> {
           itemBuilder: (context, index) {
             return ProductItem(
               product: productList[index],
-              onDelete: getProductList, // Pass the function here
             );
           },
           separatorBuilder: (context, index) {
@@ -69,38 +68,43 @@ class _ProductListScreenState extends State<ProductListScreen> {
     );
   }
 
-  Future<void> getProductList() async {
+ /* Future<void> DeleteProduct(Product product) async {
     setState(() {
       _inProgress = true;
     });
 
     print('Requesting');
-    Uri uri = Uri.parse('http://152.42.163.176:2008/api/v1/ReadProduct');
+    Uri uri = Uri.parse('http://152.42.163.176:2008/api/v1/DeleteProduct/${product.id}'); // Replace with actual base URL
     Response response = await get(uri);
 
-    print(response);
-    print(response.statusCode);
-    print(response.body);
+    //print(response);
+    //print(response.statusCode);
+    //print(response.body);
+
+
+   /* Response Response(product ) = await get(
+      uri,
+      headers: {"Content-Type": "application/json"},
+      body: jsonEncode(requestBody),
+    ); */
+
 
     if (response.statusCode == 200) {
-      productList.clear();
-      Map<String, dynamic> jsonResponse = jsonDecode(response.body);
-      for (var item in jsonResponse['data']) {
-        Product product = Product(
-          id: item['_id'].toString() ?? '',
-          productName: item['ProductName'].toString() ?? '',
-          productCode: item['ProductCode'].toString() ?? '',
-          productImage: item['Img'].toString() ?? '',
-          unitPrice: item['UnitPrice'].toString() ?? '',
-          quantity: item['Qty'].toString() ?? '',
-          totalPrice: item['TotalPrice'].toString() ?? '',
-        );
-        productList.add(product);
+
+      ScaffoldMessenger.of(context).showSnackBar(
+        const SnackBar(content: Text('Product deleted successfully')));
+          } else {
+      ScaffoldMessenger.of(context).showSnackBar(
+      const SnackBar(content: Text('Failed to delete product')));
       }
-    }
+
+
 
     setState(() {
       _inProgress = false;
     });
-  }
+  } */
+Future<void> getProductList() async {
+
+}
 }

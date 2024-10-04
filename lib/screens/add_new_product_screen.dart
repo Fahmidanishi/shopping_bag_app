@@ -1,5 +1,7 @@
+import 'dart:convert';
 import 'package:flutter/material.dart';
-//new product
+import 'package:http/http.dart';
+
 class AddNewProductScreen extends StatefulWidget {
   const AddNewProductScreen({super.key});
 
@@ -8,8 +10,7 @@ class AddNewProductScreen extends StatefulWidget {
 }
 
 class _AddNewProductScreenState extends State<AddNewProductScreen> {
-  final TextEditingController _productNameTEController =
-      TextEditingController();
+  final TextEditingController _productNameTEController = TextEditingController();
   final TextEditingController _unitpriceTEController = TextEditingController();
   final TextEditingController _totalPriceTEController = TextEditingController();
   final TextEditingController _imageTEController = TextEditingController();
@@ -17,6 +18,7 @@ class _AddNewProductScreenState extends State<AddNewProductScreen> {
   final TextEditingController _quantityTEController = TextEditingController();
 
   final GlobalKey<FormState> _formKey = GlobalKey<FormState>();
+  bool _inProgess = false;
 
   @override
   Widget build(BuildContext context) {
@@ -24,7 +26,7 @@ class _AddNewProductScreenState extends State<AddNewProductScreen> {
       appBar: AppBar(
         title: const Text('Add New Product'),
       ),
-      body: Padding(
+      body: SingleChildScrollView(
         padding: const EdgeInsets.all(16.0),
         child: _buildNewProductForm(),
       ),
@@ -42,6 +44,12 @@ class _AddNewProductScreenState extends State<AddNewProductScreen> {
               hintText: 'Name',
               labelText: 'Product Name',
             ),
+            validator: (String? value) {
+              if (value == null || value.isEmpty) {
+                return 'Enter a valid value';
+              }
+              return null;
+            },
           ),
           TextFormField(
             controller: _unitpriceTEController,
@@ -49,6 +57,12 @@ class _AddNewProductScreenState extends State<AddNewProductScreen> {
               hintText: 'Unit Price',
               labelText: 'Unit Price',
             ),
+            validator: (String? value) {
+              if (value == null || value.isEmpty) {
+                return 'Enter a valid value';
+              }
+              return null;
+            },
           ),
           TextFormField(
             controller: _totalPriceTEController,
@@ -56,6 +70,12 @@ class _AddNewProductScreenState extends State<AddNewProductScreen> {
               hintText: 'Total Price',
               labelText: 'Total Price',
             ),
+            validator: (String? value) {
+              if (value == null || value.isEmpty) {
+                return 'Enter a valid value';
+              }
+              return null;
+            },
           ),
           TextFormField(
             controller: _imageTEController,
@@ -63,6 +83,12 @@ class _AddNewProductScreenState extends State<AddNewProductScreen> {
               hintText: 'Image',
               labelText: 'Product Image',
             ),
+            validator: (String? value) {
+              if (value == null || value.isEmpty) {
+                return 'Enter a valid value';
+              }
+              return null;
+            },
           ),
           TextFormField(
             controller: _codeTEController,
@@ -70,6 +96,12 @@ class _AddNewProductScreenState extends State<AddNewProductScreen> {
               hintText: 'Product Code',
               labelText: 'Product Code',
             ),
+            validator: (String? value) {
+              if (value == null || value.isEmpty) {
+                return 'Enter a valid value';
+              }
+              return null;
+            },
           ),
           TextFormField(
             controller: _quantityTEController,
@@ -77,9 +109,17 @@ class _AddNewProductScreenState extends State<AddNewProductScreen> {
               hintText: 'Quantity',
               labelText: 'Quantity',
             ),
+            validator: (String? value) {
+              if (value == null || value.isEmpty) {
+                return 'Enter a valid value';
+              }
+              return null;
+            },
           ),
           const SizedBox(height: 16),
-          ElevatedButton(
+          _inProgess
+              ? const Center(child: CircularProgressIndicator())
+              : ElevatedButton(
             style: ElevatedButton.styleFrom(
               fixedSize: const Size.fromWidth(double.maxFinite),
             ),
@@ -91,7 +131,56 @@ class _AddNewProductScreenState extends State<AddNewProductScreen> {
     );
   }
 
-  void _onTapAddProductButton() {}
+  void _onTapAddProductButton() {
+    if (_formKey.currentState!.validate()) {
+      addNewProduct();
+    }
+  }
+
+  Future<void> addNewProduct() async {
+    setState(() {
+      _inProgess = true;
+    });
+
+    Uri uri = Uri.parse('http://152.42.163.176:2008/api/v1/CreateProduct');
+    Map<String, dynamic> requestBody = {
+      "_id": "66f16b5fa410180e95438dff",
+      "ProductName": _productNameTEController.text,
+      "ProductCode": _codeTEController.text,
+      "Img": _imageTEController.text,
+      "Qty": _quantityTEController.text,
+      "UnitPrice": _unitpriceTEController.text,
+      "TotalPrice": _totalPriceTEController.text,
+    };
+
+    Response response = await post(
+      uri,
+      headers: {"Content-Type": "application/json"},
+      body: jsonEncode(requestBody),
+    );
+
+    if (response.statusCode == 200) {
+      _clearTextField();
+      ScaffoldMessenger.of(context)
+          .showSnackBar(const SnackBar(content: Text('New product added')));
+    } else {
+      ScaffoldMessenger.of(context)
+          .showSnackBar(const SnackBar(content: Text('Failed to add product')));
+    }
+
+    setState(() {
+      _inProgess = false;
+    });
+  }
+
+  void _clearTextField() {
+    _productNameTEController.clear();
+    _quantityTEController.clear();
+    _unitpriceTEController.clear();
+    _totalPriceTEController.clear();
+    _imageTEController.clear();
+    _codeTEController.clear();
+  }
 
   @override
   void dispose() {
@@ -101,7 +190,6 @@ class _AddNewProductScreenState extends State<AddNewProductScreen> {
     _totalPriceTEController.dispose();
     _imageTEController.dispose();
     _codeTEController.dispose();
-
     super.dispose();
   }
 }
