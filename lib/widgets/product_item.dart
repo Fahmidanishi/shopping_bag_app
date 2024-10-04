@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:http/http.dart';
 import 'package:shopping_bag_app/models/product.dart';
 import 'package:shopping_bag_app/screens/update_product_screen.dart';
-//
+
 class ProductItem extends StatelessWidget {
   const ProductItem({
     super.key,
