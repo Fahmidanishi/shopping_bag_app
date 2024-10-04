@@ -2,7 +2,7 @@ import 'dart:convert';
 import 'package:flutter/material.dart';
 import 'package:http/http.dart';
 import 'package:shopping_bag_app/models/product.dart';
-
+//
 class UpdateProductScreen extends StatefulWidget {
   const UpdateProductScreen({super.key, required this.product});
 

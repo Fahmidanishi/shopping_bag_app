@@ -4,7 +4,7 @@ import 'package:http/http.dart';
 import 'package:shopping_bag_app/screens/add_new_product_screen.dart';
 import 'package:shopping_bag_app/widgets/product_item.dart';
 import 'package:shopping_bag_app/models/product.dart';
-
+//
 class DeleteProductScreen extends StatefulWidget {
   const DeleteProductScreen({super.key, required this.product});
   final Product product;
